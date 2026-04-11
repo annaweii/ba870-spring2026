@@ -1,0 +1,9 @@
+metric,value
+target,distress_next_1yr_fixed
+model,HistGradientBoostingClassifier
+roc_auc,0.7899148749559941
+best_threshold,0.7209191819733415
+n_train,110554
+n_test,24070
+positive_rate_train,0.6509669482786693
+positive_rate_test,0.24171167428334026
