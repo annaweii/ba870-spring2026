@@ -198,6 +198,33 @@ st.markdown("""
         font-weight: 800;
         margin-top: 0.35rem;
         letter-spacing: -0.4px;
+        white-space: nowrap;
+    }
+
+    /* Soft color KPI variants */
+    .kpi-box-blue {
+        background: linear-gradient(180deg, #eff6ff 0%, #ffffff 100%);
+        border: 1px solid #bfdbfe;
+    }
+
+    .kpi-box-teal {
+        background: linear-gradient(180deg, #f0fdfa 0%, #ffffff 100%);
+        border: 1px solid #99f6e4;
+    }
+
+    .kpi-box-purple {
+        background: linear-gradient(180deg, #f5f3ff 0%, #ffffff 100%);
+        border: 1px solid #ddd6fe;
+    }
+
+    .kpi-box-slate {
+        background: linear-gradient(180deg, #f8fafc 0%, #ffffff 100%);
+        border: 1px solid #cbd5e1;
+    }
+
+    .kpi-box-amber {
+        background: linear-gradient(180deg, #fffbeb 0%, #ffffff 100%);
+        border: 1px solid #fde68a;
     }
 
     /* Badges */
@@ -585,8 +612,8 @@ def fmt(val, pct=False, dollar=False, decimals=2):
         return f"{val*100:.1f}%"
     return f"{val:.{decimals}f}"
 
-def kpi(label, value):
-    return f'<div class="kpi-box"><div class="kpi-label">{label}</div><div class="kpi-value">{value}</div></div>'
+def kpi(label, value, box_class=""):
+    return f'<div class="kpi-box {box_class}"><div class="kpi-label">{label}</div><div class="kpi-value">{value}</div></div>'
 
 # ==============================================================================
 # PAGE 1 — HOME
@@ -650,11 +677,11 @@ if page == "Home":
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("#### Model Highlights")
-    m1, m2, m3, m4 = st.columns(4)
-    m1.markdown(kpi("Model", "HistGradientBoosting"), unsafe_allow_html=True)
-    m2.markdown(kpi("ROC-AUC", f"{float(metrics['roc_auc']):.4f}"), unsafe_allow_html=True)
-    m3.markdown(kpi("Target", "Next-Year Distress"), unsafe_allow_html=True)
-    m4.markdown(kpi("Benchmark", "Altman Z-Score"), unsafe_allow_html=True)
+    m1, m2, m3, m4 = st.columns([1.2, 1, 1, 1])
+    m1.markdown(kpi("Model", "HistGradientBoosting", "kpi-box-blue"), unsafe_allow_html=True)
+    m2.markdown(kpi("ROC-AUC", f"{float(metrics['roc_auc']):.4f}", "kpi-box-teal"), unsafe_allow_html=True)
+    m3.markdown(kpi("Target", "Next-Year Distress", "kpi-box-purple"), unsafe_allow_html=True)
+    m4.markdown(kpi("Benchmark", "Altman Z-Score", "kpi-box-slate"), unsafe_allow_html=True)
 
     st.markdown("""
     <div class="disclaimer">
@@ -948,30 +975,30 @@ elif page == "Financial Health Dashboard":
 
     st.markdown("#### Liquidity")
     l1, l2, l3 = st.columns(3)
-    l1.markdown(kpi("Current Ratio", fmt(feat_dict.get("current_ratio"))), unsafe_allow_html=True)
-    l2.markdown(kpi("Working Capital", fmt(feat_dict.get("wcap"), dollar=True)), unsafe_allow_html=True)
-    l3.markdown(kpi("OCF to Liabilities", fmt(feat_dict.get("ocf_to_liabilities"), pct=True)), unsafe_allow_html=True)
+    l1.markdown(kpi("Current Ratio", fmt(feat_dict.get("current_ratio")), "kpi-box-blue"), unsafe_allow_html=True)
+    l2.markdown(kpi("Working Capital", fmt(feat_dict.get("wcap"), dollar=True), "kpi-box-blue"), unsafe_allow_html=True)
+    l3.markdown(kpi("OCF to Liabilities", fmt(feat_dict.get("ocf_to_liabilities"), pct=True), "kpi-box-blue"), unsafe_allow_html=True)
 
     st.markdown("#### Profitability")
     p1, p2, p3, p4 = st.columns(4)
-    p1.markdown(kpi("ROA", fmt(feat_dict.get("roa"), pct=True)), unsafe_allow_html=True)
-    p2.markdown(kpi("EBIT / Assets", fmt(feat_dict.get("C_ebit_to_assets"), pct=True)), unsafe_allow_html=True)
-    p3.markdown(kpi("Net Income", fmt(feat_dict.get("ni"), dollar=True)), unsafe_allow_html=True)
-    p4.markdown(kpi("Revenue", fmt(feat_dict.get("sale"), dollar=True)), unsafe_allow_html=True)
+    p1.markdown(kpi("ROA", fmt(feat_dict.get("roa"), pct=True), "kpi-box-teal"), unsafe_allow_html=True)
+    p2.markdown(kpi("EBIT / Assets", fmt(feat_dict.get("C_ebit_to_assets"), pct=True), "kpi-box-teal"), unsafe_allow_html=True)
+    p3.markdown(kpi("Net Income", fmt(feat_dict.get("ni"), dollar=True), "kpi-box-teal"), unsafe_allow_html=True)
+    p4.markdown(kpi("Revenue", fmt(feat_dict.get("sale"), dollar=True), "kpi-box-teal"), unsafe_allow_html=True)
 
     st.markdown("#### Leverage and Solvency")
     v1, v2, v3, v4 = st.columns(4)
-    v1.markdown(kpi("Liabilities / Assets", fmt(feat_dict.get("liabilities_to_assets"), pct=True)), unsafe_allow_html=True)
-    v2.markdown(kpi("Debt / Assets", fmt(feat_dict.get("debt_to_assets"), pct=True)), unsafe_allow_html=True)
-    v3.markdown(kpi("Total Liabilities", fmt(feat_dict.get("lt"), dollar=True)), unsafe_allow_html=True)
-    v4.markdown(kpi("Total Assets", fmt(feat_dict.get("at"), dollar=True)), unsafe_allow_html=True)
+    v1.markdown(kpi("Liabilities / Assets", fmt(feat_dict.get("liabilities_to_assets"), pct=True), "kpi-box-purple"), unsafe_allow_html=True)
+    v2.markdown(kpi("Debt / Assets", fmt(feat_dict.get("debt_to_assets"), pct=True), "kpi-box-purple"), unsafe_allow_html=True)
+    v3.markdown(kpi("Total Liabilities", fmt(feat_dict.get("lt"), dollar=True), "kpi-box-purple"), unsafe_allow_html=True)
+    v4.markdown(kpi("Total Assets", fmt(feat_dict.get("at"), dollar=True), "kpi-box-purple"), unsafe_allow_html=True)
 
     st.markdown("#### Market Signals")
     s1, s2, s3, s4 = st.columns(4)
-    s1.markdown(kpi("1M Return", fmt(feat_dict.get("ret_1m"), pct=True)), unsafe_allow_html=True)
-    s2.markdown(kpi("12M Return", fmt(feat_dict.get("ret_12m"), pct=True)), unsafe_allow_html=True)
-    s3.markdown(kpi("Annual Volatility", fmt(feat_dict.get("vol_252d"), pct=True)), unsafe_allow_html=True)
-    s4.markdown(kpi("Market Cap", fmt(feat_dict.get("mkvalt"), dollar=True)), unsafe_allow_html=True)
+    s1.markdown(kpi("1M Return", fmt(feat_dict.get("ret_1m"), pct=True), "kpi-box-amber"), unsafe_allow_html=True)
+    s2.markdown(kpi("12M Return", fmt(feat_dict.get("ret_12m"), pct=True), "kpi-box-amber"), unsafe_allow_html=True)
+    s3.markdown(kpi("Annual Volatility", fmt(feat_dict.get("vol_252d"), pct=True), "kpi-box-amber"), unsafe_allow_html=True)
+    s4.markdown(kpi("Market Cap", fmt(feat_dict.get("mkvalt"), dollar=True), "kpi-box-amber"), unsafe_allow_html=True)
 
     if hist is not None and len(hist) > 0:
         st.markdown("<br>", unsafe_allow_html=True)
