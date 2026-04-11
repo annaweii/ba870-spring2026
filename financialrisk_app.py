@@ -25,119 +25,252 @@ st.set_page_config(
 )
 
 # ------------------------------------------------------------------------------
-# DARK HEADER STYLE
+# STYLING
 # ------------------------------------------------------------------------------
 st.markdown("""
 <style>
-    /* Dark top header bar */
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+    html, body, [class*="css"] {
+        font-family: 'Inter', 'Segoe UI', sans-serif;
+        background-color: #f0f4f9;
+    }
+
+    /* ── Sidebar ── */
+    div[data-testid="stSidebar"] {
+        background: linear-gradient(180deg, #060d1f 0%, #0b1a3b 100%);
+        border-right: 1px solid #1a2f55;
+    }
+    div[data-testid="stSidebar"] * {
+        color: #cbd5e0 !important;
+    }
+    div[data-testid="stSidebar"] h2 {
+        color: #ffffff !important;
+        font-size: 1.3rem !important;
+        font-weight: 800 !important;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+    }
+    div[data-testid="stSidebar"] hr {
+        border-color: #1e3a6b !important;
+        margin: 0.8rem 0;
+    }
+
+    /* ── Page container ── */
+    .block-container {
+        padding-top: 1.8rem;
+        padding-bottom: 2rem;
+        max-width: 1140px;
+    }
+
+    /* ── Dark gradient header ── */
     .risk-header {
-        background-color: #0f1923;
-        padding: 2rem 2.5rem 1.5rem 2.5rem;
-        border-radius: 0 0 12px 12px;
+        background: linear-gradient(135deg, #060d1f 0%, #0b1e4a 55%, #0f2d6b 100%);
+        padding: 2.8rem 3rem 2.2rem 3rem;
+        border-radius: 16px;
         margin-bottom: 2rem;
+        box-shadow: 0 8px 32px rgba(6, 13, 31, 0.22);
+        border: 1px solid #1a2f55;
+        position: relative;
+        overflow: hidden;
+    }
+    .risk-header::before {
+        content: '';
+        position: absolute;
+        top: -40px; right: -40px;
+        width: 220px; height: 220px;
+        background: radial-gradient(circle, rgba(66,153,225,0.12) 0%, transparent 70%);
+        border-radius: 50%;
     }
     .risk-header h1 {
         color: #ffffff;
-        font-size: 2.2rem;
-        font-weight: 700;
+        font-size: 2.5rem;
+        font-weight: 800;
         margin: 0;
-        letter-spacing: 0.5px;
+        letter-spacing: 1px;
     }
     .risk-header p {
-        color: #a0aec0;
-        font-size: 1rem;
-        margin-top: 0.4rem;
+        color: #90cdf4;
+        font-size: 1.05rem;
+        margin-top: 0.5rem;
+        font-weight: 400;
+        letter-spacing: 0.2px;
     }
 
-    /* Light content cards */
+    /* ── White content cards ── */
     .card {
-        background-color: #f7f9fc;
+        background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 1.2rem 1.5rem;
+        border-radius: 14px;
+        padding: 1.5rem 1.8rem;
         margin-bottom: 1rem;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        line-height: 1.75;
+        color: #2d3748;
     }
 
-    /* KPI metric boxes */
+    /* ── KPI boxes ── */
     .kpi-box {
-        background-color: #f7f9fc;
+        background: #ffffff;
         border: 1px solid #e2e8f0;
-        border-radius: 10px;
-        padding: 1rem 1.2rem;
+        border-radius: 14px;
+        padding: 1.3rem 1.2rem;
         text-align: center;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+        transition: transform 0.15s ease, box-shadow 0.15s ease;
+        height: 100%;
+    }
+    .kpi-box:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 6px 20px rgba(0,0,0,0.09);
     }
     .kpi-box .kpi-label {
-        color: #718096;
-        font-size: 0.78rem;
-        font-weight: 600;
+        color: #a0aec0;
+        font-size: 0.7rem;
+        font-weight: 700;
         text-transform: uppercase;
-        letter-spacing: 0.8px;
+        letter-spacing: 1.4px;
     }
     .kpi-box .kpi-value {
         color: #1a202c;
-        font-size: 1.6rem;
-        font-weight: 700;
-        margin-top: 0.2rem;
+        font-size: 1.7rem;
+        font-weight: 800;
+        margin-top: 0.35rem;
+        letter-spacing: -0.5px;
     }
 
-    /* Risk badge colors */
+    /* ── Risk badges ── */
     .badge-high {
-        background-color: #fff5f5;
-        border: 1px solid #fc8181;
+        background: linear-gradient(135deg, #fff5f5, #fed7d7);
+        border: 1.5px solid #fc8181;
         color: #c53030;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.95rem;
+        padding: 0.4rem 1.1rem;
+        border-radius: 24px;
+        font-weight: 700;
+        font-size: 0.88rem;
         display: inline-block;
+        letter-spacing: 0.3px;
     }
     .badge-moderate {
-        background-color: #fffbeb;
-        border: 1px solid #f6ad55;
-        color: #c05621;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.95rem;
+        background: linear-gradient(135deg, #fffbeb, #feebc8);
+        border: 1.5px solid #f6ad55;
+        color: #b7600a;
+        padding: 0.4rem 1.1rem;
+        border-radius: 24px;
+        font-weight: 700;
+        font-size: 0.88rem;
         display: inline-block;
+        letter-spacing: 0.3px;
     }
     .badge-low {
-        background-color: #f0fff4;
-        border: 1px solid #68d391;
-        color: #276749;
-        padding: 0.4rem 1rem;
-        border-radius: 20px;
-        font-weight: 600;
-        font-size: 0.95rem;
-        display: inline-block;
-    }
-
-    /* Disclaimer box */
-    .disclaimer {
-        background-color: #edf2f7;
-        border-left: 4px solid #a0aec0;
-        border-radius: 6px;
-        padding: 0.8rem 1.2rem;
-        color: #4a5568;
-        font-size: 0.85rem;
-        margin-top: 1.5rem;
-    }
-
-    /* Section headers */
-    .section-label {
-        font-size: 0.75rem;
+        background: linear-gradient(135deg, #f0fff4, #c6f6d5);
+        border: 1.5px solid #68d391;
+        color: #22543d;
+        padding: 0.4rem 1.1rem;
+        border-radius: 24px;
         font-weight: 700;
-        text-transform: uppercase;
-        letter-spacing: 1px;
-        color: #718096;
-        margin-bottom: 0.5rem;
+        font-size: 0.88rem;
+        display: inline-block;
+        letter-spacing: 0.3px;
     }
 
-    div[data-testid="stSidebar"] {
-        background-color: #0f1923;
+    /* ── Disclaimer ── */
+    .disclaimer {
+        background: linear-gradient(135deg, #ebf4ff, #e8f0fe);
+        border-left: 4px solid #4299e1;
+        border-radius: 10px;
+        padding: 1rem 1.5rem;
+        color: #4a5568;
+        font-size: 0.84rem;
+        margin-top: 2rem;
+        line-height: 1.65;
     }
-    div[data-testid="stSidebar"] * {
-        color: #e2e8f0 !important;
+
+    /* ── Step boxes ── */
+    .step-box {
+        background: #ffffff;
+        border: 1px solid #e2e8f0;
+        border-top: 4px solid #3182ce;
+        border-radius: 14px;
+        padding: 1.6rem 1.4rem;
+        text-align: center;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+    }
+    .step-box .step-num {
+        color: #3182ce;
+        font-size: 1.8rem;
+        font-weight: 800;
+        letter-spacing: -1px;
+    }
+    .step-box .step-text {
+        color: #4a5568;
+        font-size: 0.9rem;
+        margin-top: 0.5rem;
+        line-height: 1.55;
+    }
+
+    /* ── Highlight card (blue accent) ── */
+    .highlight-card {
+        background: linear-gradient(135deg, #ebf4ff, #ffffff);
+        border: 1px solid #bee3f8;
+        border-left: 4px solid #3182ce;
+        border-radius: 14px;
+        padding: 1.3rem 1.6rem;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        color: #2d3748;
+        line-height: 1.7;
+    }
+
+    /* ── Section headers ── */
+    h3, h4 {
+        color: #1a202c;
+        font-weight: 700;
+    }
+    h4 {
+        border-bottom: 2px solid #e2e8f0;
+        padding-bottom: 0.4rem;
+        margin-top: 1.8rem;
+        margin-bottom: 1rem;
+    }
+
+    /* ── Analyze button ── */
+    .stButton > button {
+        background: linear-gradient(135deg, #1a4f8a, #2b6cb0, #3182ce);
+        color: #ffffff;
+        border: none;
+        border-radius: 10px;
+        font-weight: 700;
+        font-size: 0.95rem;
+        letter-spacing: 0.5px;
+        padding: 0.55rem 1.8rem;
+        box-shadow: 0 4px 14px rgba(49,130,206,0.35);
+        transition: opacity 0.2s ease, transform 0.15s ease;
+    }
+    .stButton > button:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+        color: #ffffff;
+    }
+
+    /* ── Text input ── */
+    .stTextInput input {
+        border-radius: 10px;
+        border: 1.5px solid #cbd5e0;
+        font-size: 1rem;
+        padding: 0.55rem 1rem;
+        background: #ffffff;
+    }
+    .stTextInput input:focus {
+        border-color: #3182ce;
+        box-shadow: 0 0 0 3px rgba(49,130,206,0.18);
+    }
+
+    /* ── Divider ── */
+    hr {
+        border: none;
+        border-top: 1.5px solid #e2e8f0;
+        margin: 1.5rem 0;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -156,7 +289,7 @@ page = st.sidebar.radio("", [
 ])
 
 # ------------------------------------------------------------------------------
-# HELPER: FETCH AND COMPUTE FEATURES FROM YFINANCE
+# HELPERS
 # ------------------------------------------------------------------------------
 def safe_div(a, b):
     try:
@@ -168,14 +301,12 @@ def safe_div(a, b):
 
 @st.cache_data(show_spinner=False)
 def fetch_company_data(ticker: str):
-    """Pull financials from yfinance and compute model features."""
-    t = yf.Ticker(ticker)
-
-    info   = t.info or {}
-    bs     = t.balance_sheet
-    inc    = t.income_stmt
-    cf     = t.cashflow
-    hist   = t.history(period="1y")
+    t    = yf.Ticker(ticker)
+    info = t.info or {}
+    bs   = t.balance_sheet
+    inc  = t.income_stmt
+    cf   = t.cashflow
+    hist = t.history(period="1y")
 
     def get(sheet, *rows):
         for row in rows:
@@ -187,109 +318,85 @@ def fetch_company_data(ticker: str):
                 pass
         return np.nan
 
-    # Core accounting items
-    act    = get(bs,  "Current Assets")
-    at     = get(bs,  "Total Assets")
-    lt     = get(bs,  "Total Liabilities Net Minority Interest", "Total Liabilities")
-    lct    = get(bs,  "Current Liabilities")
-    wcap   = act - lct if pd.notna(act) and pd.notna(lct) else np.nan
-    ebit   = get(inc, "EBIT", "Operating Income")
-    ni     = get(inc, "Net Income")
-    sale   = get(inc, "Total Revenue")
-    revt   = sale
-    oancf  = get(cf,  "Operating Cash Flow", "Cash From Operations")
-    xint   = get(inc, "Interest Expense")
-    re     = get(bs,  "Retained Earnings")
-    dltt   = get(bs,  "Long Term Debt")
-    dlc    = get(bs,  "Current Debt", "Short Term Debt")
+    act   = get(bs,  "Current Assets")
+    at    = get(bs,  "Total Assets")
+    lt    = get(bs,  "Total Liabilities Net Minority Interest", "Total Liabilities")
+    lct   = get(bs,  "Current Liabilities")
+    wcap  = act - lct if pd.notna(act) and pd.notna(lct) else np.nan
+    ebit  = get(inc, "EBIT", "Operating Income")
+    ni    = get(inc, "Net Income")
+    sale  = get(inc, "Total Revenue")
+    revt  = sale
+    oancf = get(cf,  "Operating Cash Flow", "Cash From Operations")
+    xint  = get(inc, "Interest Expense")
+    re    = get(bs,  "Retained Earnings")
+    dltt  = get(bs,  "Long Term Debt")
+    dlc   = get(bs,  "Current Debt", "Short Term Debt")
 
-    # Market data
-    mkvalt   = info.get("marketCap", np.nan)
-    prcc_f   = info.get("previousClose", np.nan)
+    mkvalt     = info.get("marketCap", np.nan)
+    prcc_f     = info.get("previousClose", np.nan)
     last_close = prcc_f
 
-    # Returns and volatility from price history
     if len(hist) > 0:
         closes = hist["Close"]
-        ret_1m  = float((closes.iloc[-1] / closes.iloc[max(-21,  -len(closes))] - 1)) if len(closes) >= 5  else np.nan
-        ret_3m  = float((closes.iloc[-1] / closes.iloc[max(-63,  -len(closes))] - 1)) if len(closes) >= 20 else np.nan
-        ret_6m  = float((closes.iloc[-1] / closes.iloc[max(-126, -len(closes))] - 1)) if len(closes) >= 40 else np.nan
-        ret_12m = float((closes.iloc[-1] / closes.iloc[0]))  - 1
-        daily_ret = closes.pct_change().dropna()
-        vol_30d   = float(daily_ret.iloc[-30:].std()  * np.sqrt(252)) if len(daily_ret) >= 20 else np.nan
-        vol_90d   = float(daily_ret.iloc[-90:].std()  * np.sqrt(252)) if len(daily_ret) >= 60 else np.nan
-        vol_252d  = float(daily_ret.std() * np.sqrt(252))
-        peak      = closes.cummax()
-        drawdown_1y = float(((closes - peak) / peak).min())
+        ret_1m       = float(closes.iloc[-1] / closes.iloc[max(-21,  -len(closes))] - 1) if len(closes) >= 5  else np.nan
+        ret_3m       = float(closes.iloc[-1] / closes.iloc[max(-63,  -len(closes))] - 1) if len(closes) >= 20 else np.nan
+        ret_6m       = float(closes.iloc[-1] / closes.iloc[max(-126, -len(closes))] - 1) if len(closes) >= 40 else np.nan
+        ret_12m      = float(closes.iloc[-1] / closes.iloc[0]) - 1
+        daily_ret    = closes.pct_change().dropna()
+        vol_30d      = float(daily_ret.iloc[-30:].std()  * np.sqrt(252)) if len(daily_ret) >= 20 else np.nan
+        vol_90d      = float(daily_ret.iloc[-90:].std()  * np.sqrt(252)) if len(daily_ret) >= 60 else np.nan
+        vol_252d     = float(daily_ret.std() * np.sqrt(252))
+        peak         = closes.cummax()
+        drawdown_1y  = float(((closes - peak) / peak).min())
         avg_volume_30d = float(hist["Volume"].iloc[-30:].mean()) if "Volume" in hist.columns else np.nan
     else:
         ret_1m = ret_3m = ret_6m = ret_12m = np.nan
         vol_30d = vol_90d = vol_252d = np.nan
         drawdown_1y = avg_volume_30d = np.nan
 
-    # Engineered ratios
     liabilities_to_assets = safe_div(lt, at)
     roa                   = safe_div(ni, at)
     ocf_to_liabilities    = safe_div(oancf, lt)
     current_ratio         = safe_div(act, lct)
     debt_to_assets        = safe_div((dltt or 0) + (dlc or 0), at)
 
-    # Altman Z-score components
-    A_wc_to_assets   = safe_div(wcap, at)
-    B_re_to_assets   = safe_div(re, at)
-    C_ebit_to_assets = safe_div(ebit, at)
-    D_mve_to_lt      = safe_div(mkvalt, lt)
-    E_sales_to_assets= safe_div(sale, at)
+    A_wc_to_assets    = safe_div(wcap, at)
+    B_re_to_assets    = safe_div(re, at)
+    C_ebit_to_assets  = safe_div(ebit, at)
+    D_mve_to_lt       = safe_div(mkvalt, lt)
+    E_sales_to_assets = safe_div(sale, at)
 
     Altman_Z = (
-        1.2 * (A_wc_to_assets   or 0) +
-        1.4 * (B_re_to_assets   or 0) +
-        3.3 * (C_ebit_to_assets or 0) +
-        0.6 * (D_mve_to_lt      or 0) +
+        1.2 * (A_wc_to_assets    or 0) +
+        1.4 * (B_re_to_assets    or 0) +
+        3.3 * (C_ebit_to_assets  or 0) +
+        0.6 * (D_mve_to_lt       or 0) +
         1.0 * (E_sales_to_assets or 0)
     )
 
     feature_dict = {
-        "Altman_Z":            Altman_Z,
-        "A_wc_to_assets":      A_wc_to_assets,
-        "B_re_to_assets":      B_re_to_assets,
-        "C_ebit_to_assets":    C_ebit_to_assets,
-        "D_mve_to_lt":         D_mve_to_lt,
-        "E_sales_to_assets":   E_sales_to_assets,
-        "act":                 act,
-        "at":                  at,
-        "lt":                  lt,
-        "wcap":                wcap,
-        "ebit":                ebit,
-        "ni":                  ni,
-        "sale":                sale,
-        "revt":                revt,
-        "oancf":               oancf,
-        "xint":                xint,
-        "mkvalt":              mkvalt,
-        "prcc_f":              prcc_f,
-        "last_close":          last_close,
-        "ret_1m":              ret_1m,
-        "ret_3m":              ret_3m,
-        "ret_6m":              ret_6m,
-        "ret_12m":             ret_12m,
-        "vol_30d":             vol_30d,
-        "vol_90d":             vol_90d,
-        "vol_252d":            vol_252d,
-        "drawdown_1y":         drawdown_1y,
-        "avg_volume_30d":      avg_volume_30d,
-        "liabilities_to_assets": liabilities_to_assets,
-        "roa":                 roa,
-        "ocf_to_liabilities":  ocf_to_liabilities,
-        "current_ratio":       current_ratio,
-        "debt_to_assets":      debt_to_assets,
+        "Altman_Z": Altman_Z, "A_wc_to_assets": A_wc_to_assets,
+        "B_re_to_assets": B_re_to_assets, "C_ebit_to_assets": C_ebit_to_assets,
+        "D_mve_to_lt": D_mve_to_lt, "E_sales_to_assets": E_sales_to_assets,
+        "act": act, "at": at, "lt": lt, "wcap": wcap, "ebit": ebit,
+        "ni": ni, "sale": sale, "revt": revt, "oancf": oancf, "xint": xint,
+        "mkvalt": mkvalt, "prcc_f": prcc_f, "last_close": last_close,
+        "ret_1m": ret_1m, "ret_3m": ret_3m, "ret_6m": ret_6m, "ret_12m": ret_12m,
+        "vol_30d": vol_30d, "vol_90d": vol_90d, "vol_252d": vol_252d,
+        "drawdown_1y": drawdown_1y, "avg_volume_30d": avg_volume_30d,
+        "liabilities_to_assets": liabilities_to_assets, "roa": roa,
+        "ocf_to_liabilities": ocf_to_liabilities, "current_ratio": current_ratio,
+        "debt_to_assets": debt_to_assets,
     }
 
-    company_name = info.get("longName", ticker.upper())
-    sector       = info.get("sector", "N/A")
-    industry     = info.get("industry", "N/A")
-
-    return feature_dict, company_name, sector, industry, Altman_Z, info, hist
+    return (
+        feature_dict,
+        info.get("longName", ticker.upper()),
+        info.get("sector", "N/A"),
+        info.get("industry", "N/A"),
+        Altman_Z, info, hist
+    )
 
 def get_risk_label(prob):
     if prob >= THRESHOLD * 1.3:
@@ -300,25 +407,23 @@ def get_risk_label(prob):
         return "Low Risk", "badge-low"
 
 def get_altman_label(z):
-    if z < 1.81:
-        return "Distress Zone", "badge-high"
-    elif z < 2.99:
-        return "Grey Zone", "badge-moderate"
-    else:
-        return "Safe Zone", "badge-low"
+    if z < 1.81:   return "Distress Zone", "badge-high"
+    elif z < 2.99: return "Grey Zone",     "badge-moderate"
+    else:          return "Safe Zone",     "badge-low"
 
 def fmt(val, pct=False, dollar=False, decimals=2):
     if val is None or (isinstance(val, float) and np.isnan(val)):
         return "N/A"
     if dollar:
-        if abs(val) >= 1e9:
-            return f"${val/1e9:.1f}B"
-        elif abs(val) >= 1e6:
-            return f"${val/1e6:.1f}M"
+        if abs(val) >= 1e9: return f"${val/1e9:.1f}B"
+        if abs(val) >= 1e6: return f"${val/1e6:.1f}M"
         return f"${val:,.0f}"
     if pct:
         return f"{val*100:.1f}%"
     return f"{val:.{decimals}f}"
+
+def kpi(label, value):
+    return f'<div class="kpi-box"><div class="kpi-label">{label}</div><div class="kpi-value">{value}</div></div>'
 
 # ==============================================================================
 # PAGE 1 — HOME
@@ -331,7 +436,7 @@ if page == "Home":
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("#### What this app does")
+    st.markdown("#### What This App Does")
     st.markdown("""
     <div class="card">
     RiskMonitor estimates the probability that a publicly traded company will become
@@ -342,7 +447,7 @@ if page == "Home":
     </div>
     """, unsafe_allow_html=True)
 
-    st.markdown("#### Why it matters")
+    st.markdown("#### Why It Matters")
     col1, col2 = st.columns(2)
     with col1:
         st.markdown("""
@@ -363,42 +468,43 @@ if page == "Home":
         </div>
         """, unsafe_allow_html=True)
 
-    st.markdown("#### How to use it")
+    st.markdown("#### How To Use It")
     c1, c2, c3 = st.columns(3)
     with c1:
         st.markdown("""
-        <div class="kpi-box">
-            <div class="kpi-label">Step 1</div>
-            <div class="kpi-value" style="font-size:1rem; margin-top:0.5rem;">Enter a ticker on the Company Risk Check page</div>
+        <div class="step-box">
+            <div class="step-num">01</div>
+            <div class="step-text">Enter any stock ticker on the Company Risk Check page</div>
         </div>
         """, unsafe_allow_html=True)
     with c2:
         st.markdown("""
-        <div class="kpi-box">
-            <div class="kpi-label">Step 2</div>
-            <div class="kpi-value" style="font-size:1rem; margin-top:0.5rem;">Review the predicted risk score and explanation</div>
+        <div class="step-box">
+            <div class="step-num">02</div>
+            <div class="step-text">Review the predicted distress probability and risk category</div>
         </div>
         """, unsafe_allow_html=True)
     with c3:
         st.markdown("""
-        <div class="kpi-box">
-            <div class="kpi-label">Step 3</div>
-            <div class="kpi-value" style="font-size:1rem; margin-top:0.5rem;">Explore financial health and risk drivers in depth</div>
+        <div class="step-box">
+            <div class="step-num">03</div>
+            <div class="step-text">Explore financial health and risk drivers in depth</div>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("#### Model highlights")
+    st.markdown("#### Model Highlights")
     m1, m2, m3, m4 = st.columns(4)
-    m1.markdown('<div class="kpi-box"><div class="kpi-label">Model</div><div class="kpi-value" style="font-size:1.1rem;">HistGradientBoosting</div></div>', unsafe_allow_html=True)
-    m2.markdown(f'<div class="kpi-box"><div class="kpi-label">ROC-AUC</div><div class="kpi-value">{float(metrics["roc_auc"]):.4f}</div></div>', unsafe_allow_html=True)
-    m3.markdown('<div class="kpi-box"><div class="kpi-label">Target</div><div class="kpi-value" style="font-size:1.1rem;">Next-Year Distress</div></div>', unsafe_allow_html=True)
-    m4.markdown('<div class="kpi-box"><div class="kpi-label">Benchmark</div><div class="kpi-value" style="font-size:1.1rem;">Altman Z-Score</div></div>', unsafe_allow_html=True)
+    m1.markdown(kpi("Model", "HistGradientBoosting"), unsafe_allow_html=True)
+    m2.markdown(kpi("ROC-AUC", f"{float(metrics['roc_auc']):.4f}"), unsafe_allow_html=True)
+    m3.markdown(kpi("Target", "Next-Year Distress"), unsafe_allow_html=True)
+    m4.markdown(kpi("Benchmark", "Altman Z-Score"), unsafe_allow_html=True)
 
     st.markdown("""
     <div class="disclaimer">
-    This tool is for academic and analytical purposes only. It is not investment, lending, or legal advice.
-    Predictions are probabilistic and based on publicly available data that may be incomplete or delayed.
+    This tool is for academic and analytical purposes only. It is not investment, lending,
+    or legal advice. Predictions are probabilistic and based on publicly available data
+    that may be incomplete or delayed.
     </div>
     """, unsafe_allow_html=True)
 
@@ -422,7 +528,7 @@ elif page == "Company Risk Check":
         with st.spinner(f"Fetching data for {ticker}..."):
             try:
                 feat_dict, company_name, sector, industry, altman_z, info, hist = fetch_company_data(ticker)
-            except Exception as e:
+            except Exception:
                 st.error(f"Could not retrieve data for {ticker}. Check the ticker and try again.")
                 st.stop()
 
@@ -432,84 +538,85 @@ elif page == "Company Risk Check":
         z_label, z_badge        = get_altman_label(altman_z)
 
         st.markdown(f"### {company_name}")
-        st.markdown(f"**{sector}** — {industry}")
-        st.divider()
+        st.markdown(f"<span style='color:#718096; font-size:0.95rem;'>{sector} &nbsp;—&nbsp; {industry}</span>", unsafe_allow_html=True)
+        st.markdown("<hr>", unsafe_allow_html=True)
 
-        # Top KPI row
         k1, k2, k3, k4 = st.columns(4)
-        k1.markdown(f'<div class="kpi-box"><div class="kpi-label">Distress Probability</div><div class="kpi-value">{prob*100:.1f}%</div></div>', unsafe_allow_html=True)
-        k2.markdown(f'<div class="kpi-box"><div class="kpi-label">Risk Category</div><div class="kpi-value" style="font-size:1.1rem;"><span class="{badge_class}">{risk_label}</span></div></div>', unsafe_allow_html=True)
-        k3.markdown(f'<div class="kpi-box"><div class="kpi-label">Model Threshold</div><div class="kpi-value">{THRESHOLD:.4f}</div></div>', unsafe_allow_html=True)
-        k4.markdown(f'<div class="kpi-box"><div class="kpi-label">Altman Z-Score</div><div class="kpi-value">{altman_z:.2f} <span class="{z_badge}" style="font-size:0.75rem;">{z_label}</span></div></div>', unsafe_allow_html=True)
+        k1.markdown(kpi("Distress Probability", f"{prob*100:.1f}%"), unsafe_allow_html=True)
+        k2.markdown(f'<div class="kpi-box"><div class="kpi-label">Risk Category</div><div class="kpi-value" style="font-size:1.1rem; margin-top:0.5rem;"><span class="{badge_class}">{risk_label}</span></div></div>', unsafe_allow_html=True)
+        k3.markdown(kpi("Model Threshold", f"{THRESHOLD:.4f}"), unsafe_allow_html=True)
+        k4.markdown(f'<div class="kpi-box"><div class="kpi-label">Altman Z-Score</div><div class="kpi-value">{altman_z:.2f}<br><span class="{z_badge}" style="font-size:0.72rem;">{z_label}</span></div></div>', unsafe_allow_html=True)
 
         st.markdown("<br>", unsafe_allow_html=True)
-
-        # Gauge chart
-        gauge = go.Figure(go.Indicator(
-            mode="gauge+number",
-            value=prob * 100,
-            number={"suffix": "%", "font": {"size": 36}},
-            gauge={
-                "axis": {"range": [0, 100], "tickwidth": 1},
-                "bar":  {"color": "#e53e3e" if prob >= THRESHOLD else "#48bb78"},
-                "steps": [
-                    {"range": [0,   THRESHOLD*80],        "color": "#f0fff4"},
-                    {"range": [THRESHOLD*80, THRESHOLD*130], "color": "#fffbeb"},
-                    {"range": [THRESHOLD*130, 100],        "color": "#fff5f5"},
-                ],
-                "threshold": {
-                    "line":  {"color": "#2d3748", "width": 3},
-                    "thickness": 0.75,
-                    "value": THRESHOLD * 100
-                }
-            },
-            title={"text": "Distress Probability", "font": {"size": 16}}
-        ))
-        gauge.update_layout(height=280, margin=dict(t=40, b=10, l=30, r=30))
-
         g_col, s_col = st.columns([1, 1])
-        with g_col:
-            st.plotly_chart(gauge, use_container_width=True)
-        with s_col:
-            st.markdown("<br><br>", unsafe_allow_html=True)
-            st.markdown("**Plain-English Summary**")
 
+        with g_col:
+            gauge = go.Figure(go.Indicator(
+                mode="gauge+number",
+                value=prob * 100,
+                number={"suffix": "%", "font": {"size": 38, "color": "#1a202c"}},
+                gauge={
+                    "axis": {"range": [0, 100], "tickwidth": 1, "tickcolor": "#a0aec0"},
+                    "bar":  {"color": "#e53e3e" if prob >= THRESHOLD else "#38a169", "thickness": 0.28},
+                    "bgcolor": "white",
+                    "steps": [
+                        {"range": [0,   THRESHOLD*80],          "color": "#f0fff4"},
+                        {"range": [THRESHOLD*80, THRESHOLD*130],"color": "#fffbeb"},
+                        {"range": [THRESHOLD*130, 100],         "color": "#fff5f5"},
+                    ],
+                    "threshold": {
+                        "line":      {"color": "#2d3748", "width": 3},
+                        "thickness": 0.75,
+                        "value":     THRESHOLD * 100
+                    }
+                },
+                title={"text": "Distress Probability", "font": {"size": 15, "color": "#718096"}}
+            ))
+            gauge.update_layout(
+                height=300,
+                margin=dict(t=50, b=10, l=30, r=30),
+                paper_bgcolor="white",
+                font={"family": "Inter, Segoe UI, sans-serif"}
+            )
+            st.plotly_chart(gauge, use_container_width=True)
+
+        with s_col:
+            st.markdown("<br>", unsafe_allow_html=True)
             drivers = []
-            if feat_dict.get("roa", 0) and feat_dict["roa"] < 0:
+            if feat_dict.get("roa") and feat_dict["roa"] < 0:
                 drivers.append("negative profitability (ROA below zero)")
-            if feat_dict.get("liabilities_to_assets", 0) and feat_dict["liabilities_to_assets"] > 0.7:
+            if feat_dict.get("liabilities_to_assets") and feat_dict["liabilities_to_assets"] > 0.7:
                 drivers.append("high leverage (liabilities over 70% of assets)")
-            if feat_dict.get("current_ratio", 2) and feat_dict["current_ratio"] < 1:
+            if feat_dict.get("current_ratio") and feat_dict["current_ratio"] < 1:
                 drivers.append("weak liquidity (current ratio below 1)")
-            if feat_dict.get("ocf_to_liabilities", 0) and feat_dict["ocf_to_liabilities"] < 0:
+            if feat_dict.get("ocf_to_liabilities") and feat_dict["ocf_to_liabilities"] < 0:
                 drivers.append("negative operating cash flow relative to liabilities")
             if altman_z < 1.81:
                 drivers.append("an Altman Z-score in the distress zone")
 
             if prob >= THRESHOLD:
-                if drivers:
-                    summary = f"This company shows elevated next-year distress risk, driven by {', '.join(drivers)}."
-                else:
-                    summary = "This company shows elevated next-year distress risk based on the combined model signal."
+                summary = f"This company shows elevated next-year distress risk" + (f", driven by {', '.join(drivers)}." if drivers else ".")
             else:
                 summary = "Based on current financial and market data, this company does not show elevated distress risk relative to the model threshold."
 
-            st.markdown(f'<div class="card">{summary}</div>', unsafe_allow_html=True)
+            st.markdown("**Plain-English Summary**")
+            st.markdown(f'<div class="highlight-card">{summary}</div>', unsafe_allow_html=True)
 
-        # Benchmark strip
         st.markdown("#### Benchmark Signals")
         b1, b2, b3, b4 = st.columns(4)
-        b1.markdown(f'<div class="kpi-box"><div class="kpi-label">Altman Z-Score</div><div class="kpi-value">{fmt(altman_z)}</div></div>', unsafe_allow_html=True)
-        b2.markdown(f'<div class="kpi-box"><div class="kpi-label">Current Ratio</div><div class="kpi-value">{fmt(feat_dict.get("current_ratio"))}</div></div>', unsafe_allow_html=True)
-        b3.markdown(f'<div class="kpi-box"><div class="kpi-label">ROA</div><div class="kpi-value">{fmt(feat_dict.get("roa"), pct=True)}</div></div>', unsafe_allow_html=True)
-        b4.markdown(f'<div class="kpi-box"><div class="kpi-label">Debt to Assets</div><div class="kpi-value">{fmt(feat_dict.get("debt_to_assets"), pct=True)}</div></div>', unsafe_allow_html=True)
+        b1.markdown(kpi("Altman Z-Score",  fmt(altman_z)), unsafe_allow_html=True)
+        b2.markdown(kpi("Current Ratio",   fmt(feat_dict.get("current_ratio"))), unsafe_allow_html=True)
+        b3.markdown(kpi("ROA",             fmt(feat_dict.get("roa"), pct=True)), unsafe_allow_html=True)
+        b4.markdown(kpi("Debt to Assets",  fmt(feat_dict.get("debt_to_assets"), pct=True)), unsafe_allow_html=True)
 
-        st.session_state["last_ticker"]    = ticker
-        st.session_state["last_feat_dict"] = feat_dict
-        st.session_state["last_prob"]      = prob
-        st.session_state["last_altman"]    = altman_z
-        st.session_state["last_company"]   = company_name
-        st.session_state["last_hist"]      = hist
+        st.session_state.update({
+            "last_ticker":    ticker,
+            "last_feat_dict": feat_dict,
+            "last_prob":      prob,
+            "last_altman":    altman_z,
+            "last_company":   company_name,
+            "last_hist":      hist,
+        })
 
 # ==============================================================================
 # PAGE 3 — RISK DRIVERS
@@ -527,84 +634,77 @@ elif page == "Risk Drivers":
         st.stop()
 
     feat_dict    = st.session_state["last_feat_dict"]
-    prob         = st.session_state["last_prob"]
     company_name = st.session_state["last_company"]
 
     st.markdown(f"### {company_name} — Risk Driver Analysis")
 
-    # Reference medians (approximate healthy benchmarks)
     benchmarks = {
-        "roa":                  ("ROA",                     0.05,  True,  False),
-        "current_ratio":        ("Current Ratio",            1.5,   False, False),
-        "liabilities_to_assets":("Liabilities to Assets",   0.5,   False, True),
-        "debt_to_assets":       ("Debt to Assets",           0.35,  False, True),
-        "ocf_to_liabilities":   ("OCF to Liabilities",       0.1,   False, False),
-        "A_wc_to_assets":       ("Working Capital / Assets", 0.1,   False, False),
-        "C_ebit_to_assets":     ("EBIT / Assets",            0.08,  False, False),
-        "Altman_Z":             ("Altman Z-Score",           2.99,  False, False),
-        "drawdown_1y":          ("1Y Max Drawdown",         -0.2,   False, True),
-        "vol_252d":             ("Annual Volatility",        0.25,  False, True),
+        "roa":                   ("ROA",                      0.05,  True,  False),
+        "current_ratio":         ("Current Ratio",             1.5,   False, False),
+        "liabilities_to_assets": ("Liabilities to Assets",    0.5,   False, True),
+        "debt_to_assets":        ("Debt to Assets",            0.35,  False, True),
+        "ocf_to_liabilities":    ("OCF to Liabilities",        0.1,   False, False),
+        "A_wc_to_assets":        ("Working Capital / Assets",  0.1,   False, False),
+        "C_ebit_to_assets":      ("EBIT / Assets",             0.08,  False, False),
+        "Altman_Z":              ("Altman Z-Score",            2.99,  False, False),
+        "drawdown_1y":           ("1Y Max Drawdown",          -0.2,   False, True),
+        "vol_252d":              ("Annual Volatility",         0.25,  False, True),
     }
 
     rows = []
     for key, (label, ref, is_pct, higher_is_worse) in benchmarks.items():
         val = feat_dict.get(key, np.nan)
-        if val is None or np.isnan(val):
+        if val is None or (isinstance(val, float) and np.isnan(val)):
             continue
-        gap = val - ref
         if higher_is_worse:
             signal = "Increases Risk" if val > ref else "Reduces Risk"
-            color  = "#c53030" if val > ref else "#276749"
+            color  = "#e53e3e" if val > ref else "#38a169"
         else:
             signal = "Reduces Risk" if val >= ref else "Increases Risk"
-            color  = "#276749" if val >= ref else "#c53030"
-
+            color  = "#38a169" if val >= ref else "#e53e3e"
         rows.append({
-            "Feature":    label,
-            "Value":      fmt(val, pct=is_pct),
-            "Benchmark":  fmt(ref, pct=is_pct),
-            "Signal":     signal,
-            "_color":     color,
-            "_val":       val,
-            "_ref":       ref,
-            "_worse":     higher_is_worse,
+            "Feature":   label,
+            "Value":     fmt(val, pct=is_pct),
+            "Benchmark": fmt(ref, pct=is_pct),
+            "Signal":    signal,
+            "_color":    color,
+            "_val":      val,
+            "_ref":      ref,
         })
 
     df_drivers = pd.DataFrame(rows)
-
     left, right = st.columns([1.2, 1])
 
     with left:
         st.markdown("**Feature vs Benchmark**")
         fig = go.Figure()
         for _, row in df_drivers.iterrows():
-            color = row["_color"]
             fig.add_trace(go.Bar(
                 x=[row["_val"] - row["_ref"]],
                 y=[row["Feature"]],
                 orientation="h",
-                marker_color=color,
+                marker_color=row["_color"],
                 showlegend=False,
                 hovertemplate=f"{row['Feature']}: {row['Value']} (benchmark {row['Benchmark']})<extra></extra>"
             ))
         fig.update_layout(
             xaxis_title="Deviation from benchmark",
-            height=380,
+            height=400,
             margin=dict(t=20, b=20, l=10, r=10),
             plot_bgcolor="white",
-            paper_bgcolor="white"
+            paper_bgcolor="white",
+            font={"family": "Inter, Segoe UI, sans-serif", "color": "#4a5568"}
         )
         st.plotly_chart(fig, use_container_width=True)
 
     with right:
         st.markdown("**Signal Breakdown**")
         for _, row in df_drivers.iterrows():
-            color = row["_color"]
             st.markdown(
-                f'<div class="card" style="border-left: 4px solid {color}; padding: 0.6rem 1rem;">'
-                f'<b>{row["Feature"]}</b><br>'
-                f'<span style="color:#4a5568;">Value: {row["Value"]} &nbsp;|&nbsp; Benchmark: {row["Benchmark"]}</span><br>'
-                f'<span style="color:{color}; font-weight:600;">{row["Signal"]}</span>'
+                f'<div class="card" style="border-left: 4px solid {row["_color"]}; padding: 0.7rem 1.1rem; margin-bottom:0.6rem;">'
+                f'<b style="color:#1a202c;">{row["Feature"]}</b><br>'
+                f'<span style="color:#718096; font-size:0.85rem;">Value: {row["Value"]} &nbsp;|&nbsp; Benchmark: {row["Benchmark"]}</span><br>'
+                f'<span style="color:{row["_color"]}; font-weight:700; font-size:0.85rem;">{row["Signal"]}</span>'
                 f'</div>',
                 unsafe_allow_html=True
             )
@@ -614,10 +714,10 @@ elif page == "Risk Drivers":
     reducing   = [r["Feature"] for _, r in df_drivers.iterrows() if r["Signal"] == "Reduces Risk"]
     narrative  = ""
     if increasing:
-        narrative += f"The company's risk profile is negatively impacted by: {', '.join(increasing)}. "
+        narrative += f"Risk is negatively impacted by: {', '.join(increasing)}. "
     if reducing:
         narrative += f"Positive signals include: {', '.join(reducing)}."
-    st.markdown(f'<div class="card">{narrative}</div>', unsafe_allow_html=True)
+    st.markdown(f'<div class="highlight-card">{narrative}</div>', unsafe_allow_html=True)
 
 # ==============================================================================
 # PAGE 4 — FINANCIAL HEALTH DASHBOARD
@@ -640,59 +740,49 @@ elif page == "Financial Health Dashboard":
 
     st.markdown(f"### {company_name}")
 
-    # Liquidity
     st.markdown("#### Liquidity")
     l1, l2, l3 = st.columns(3)
-    l1.markdown(f'<div class="kpi-box"><div class="kpi-label">Current Ratio</div><div class="kpi-value">{fmt(feat_dict.get("current_ratio"))}</div></div>', unsafe_allow_html=True)
-    l2.markdown(f'<div class="kpi-box"><div class="kpi-label">Working Capital</div><div class="kpi-value">{fmt(feat_dict.get("wcap"), dollar=True)}</div></div>', unsafe_allow_html=True)
-    l3.markdown(f'<div class="kpi-box"><div class="kpi-label">OCF to Liabilities</div><div class="kpi-value">{fmt(feat_dict.get("ocf_to_liabilities"), pct=True)}</div></div>', unsafe_allow_html=True)
+    l1.markdown(kpi("Current Ratio",     fmt(feat_dict.get("current_ratio"))), unsafe_allow_html=True)
+    l2.markdown(kpi("Working Capital",   fmt(feat_dict.get("wcap"), dollar=True)), unsafe_allow_html=True)
+    l3.markdown(kpi("OCF to Liabilities",fmt(feat_dict.get("ocf_to_liabilities"), pct=True)), unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Profitability
     st.markdown("#### Profitability")
     p1, p2, p3, p4 = st.columns(4)
-    p1.markdown(f'<div class="kpi-box"><div class="kpi-label">ROA</div><div class="kpi-value">{fmt(feat_dict.get("roa"), pct=True)}</div></div>', unsafe_allow_html=True)
-    p2.markdown(f'<div class="kpi-box"><div class="kpi-label">EBIT / Assets</div><div class="kpi-value">{fmt(feat_dict.get("C_ebit_to_assets"), pct=True)}</div></div>', unsafe_allow_html=True)
-    p3.markdown(f'<div class="kpi-box"><div class="kpi-label">Net Income</div><div class="kpi-value">{fmt(feat_dict.get("ni"), dollar=True)}</div></div>', unsafe_allow_html=True)
-    p4.markdown(f'<div class="kpi-box"><div class="kpi-label">Revenue</div><div class="kpi-value">{fmt(feat_dict.get("sale"), dollar=True)}</div></div>', unsafe_allow_html=True)
+    p1.markdown(kpi("ROA",          fmt(feat_dict.get("roa"), pct=True)), unsafe_allow_html=True)
+    p2.markdown(kpi("EBIT / Assets",fmt(feat_dict.get("C_ebit_to_assets"), pct=True)), unsafe_allow_html=True)
+    p3.markdown(kpi("Net Income",   fmt(feat_dict.get("ni"), dollar=True)), unsafe_allow_html=True)
+    p4.markdown(kpi("Revenue",      fmt(feat_dict.get("sale"), dollar=True)), unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Leverage
     st.markdown("#### Leverage and Solvency")
     v1, v2, v3, v4 = st.columns(4)
-    v1.markdown(f'<div class="kpi-box"><div class="kpi-label">Liabilities / Assets</div><div class="kpi-value">{fmt(feat_dict.get("liabilities_to_assets"), pct=True)}</div></div>', unsafe_allow_html=True)
-    v2.markdown(f'<div class="kpi-box"><div class="kpi-label">Debt / Assets</div><div class="kpi-value">{fmt(feat_dict.get("debt_to_assets"), pct=True)}</div></div>', unsafe_allow_html=True)
-    v3.markdown(f'<div class="kpi-box"><div class="kpi-label">Total Liabilities</div><div class="kpi-value">{fmt(feat_dict.get("lt"), dollar=True)}</div></div>', unsafe_allow_html=True)
-    v4.markdown(f'<div class="kpi-box"><div class="kpi-label">Total Assets</div><div class="kpi-value">{fmt(feat_dict.get("at"), dollar=True)}</div></div>', unsafe_allow_html=True)
+    v1.markdown(kpi("Liabilities / Assets", fmt(feat_dict.get("liabilities_to_assets"), pct=True)), unsafe_allow_html=True)
+    v2.markdown(kpi("Debt / Assets",        fmt(feat_dict.get("debt_to_assets"), pct=True)), unsafe_allow_html=True)
+    v3.markdown(kpi("Total Liabilities",    fmt(feat_dict.get("lt"), dollar=True)), unsafe_allow_html=True)
+    v4.markdown(kpi("Total Assets",         fmt(feat_dict.get("at"), dollar=True)), unsafe_allow_html=True)
 
-    st.markdown("<br>", unsafe_allow_html=True)
-
-    # Market signals + price chart
     st.markdown("#### Market Signals")
     s1, s2, s3, s4 = st.columns(4)
-    s1.markdown(f'<div class="kpi-box"><div class="kpi-label">1M Return</div><div class="kpi-value">{fmt(feat_dict.get("ret_1m"), pct=True)}</div></div>', unsafe_allow_html=True)
-    s2.markdown(f'<div class="kpi-box"><div class="kpi-label">12M Return</div><div class="kpi-value">{fmt(feat_dict.get("ret_12m"), pct=True)}</div></div>', unsafe_allow_html=True)
-    s3.markdown(f'<div class="kpi-box"><div class="kpi-label">Annual Volatility</div><div class="kpi-value">{fmt(feat_dict.get("vol_252d"), pct=True)}</div></div>', unsafe_allow_html=True)
-    s4.markdown(f'<div class="kpi-box"><div class="kpi-label">Market Cap</div><div class="kpi-value">{fmt(feat_dict.get("mkvalt"), dollar=True)}</div></div>', unsafe_allow_html=True)
+    s1.markdown(kpi("1M Return",        fmt(feat_dict.get("ret_1m"),  pct=True)), unsafe_allow_html=True)
+    s2.markdown(kpi("12M Return",       fmt(feat_dict.get("ret_12m"), pct=True)), unsafe_allow_html=True)
+    s3.markdown(kpi("Annual Volatility",fmt(feat_dict.get("vol_252d"),pct=True)), unsafe_allow_html=True)
+    s4.markdown(kpi("Market Cap",       fmt(feat_dict.get("mkvalt"), dollar=True)), unsafe_allow_html=True)
 
     if hist is not None and len(hist) > 0:
         st.markdown("<br>", unsafe_allow_html=True)
         fig_price = px.line(
-            hist.reset_index(),
-            x="Date",
-            y="Close",
+            hist.reset_index(), x="Date", y="Close",
             title="12-Month Price History",
             labels={"Close": "Price (USD)", "Date": ""}
         )
-        fig_price.update_traces(line_color="#2b6cb0", line_width=2)
+        fig_price.update_traces(line_color="#2b6cb0", line_width=2.5)
         fig_price.update_layout(
-            plot_bgcolor="white",
-            paper_bgcolor="white",
-            height=300,
-            margin=dict(t=40, b=20, l=10, r=10)
+            plot_bgcolor="white", paper_bgcolor="white",
+            height=320, margin=dict(t=45, b=20, l=10, r=10),
+            font={"family": "Inter, Segoe UI, sans-serif", "color": "#4a5568"},
+            title_font={"size": 15, "color": "#2d3748"}
         )
+        fig_price.update_xaxes(showgrid=True, gridcolor="#f0f4f9")
+        fig_price.update_yaxes(showgrid=True, gridcolor="#f0f4f9")
         st.plotly_chart(fig_price, use_container_width=True)
 
 # ==============================================================================
@@ -731,8 +821,7 @@ elif page == "Methodology":
     <b>HistGradientBoostingClassifier</b> (scikit-learn) was selected as the final model
     after comparison against logistic regression and random forest baselines.
     It handles missing values natively, is robust to outliers with winsorization applied
-    during training, and performs well on imbalanced tabular financial data.
-    <br><br>
+    during training, and performs well on imbalanced tabular financial data.<br><br>
     Key hyperparameters: learning rate 0.05, max depth 6, 300 iterations,
     min samples per leaf 50, L2 regularization 1.0.
     </div>
@@ -740,22 +829,20 @@ elif page == "Methodology":
 
     st.markdown("#### Model Performance")
     mc1, mc2, mc3, mc4 = st.columns(4)
-    mc1.markdown(f'<div class="kpi-box"><div class="kpi-label">ROC-AUC</div><div class="kpi-value">{float(metrics["roc_auc"]):.4f}</div></div>', unsafe_allow_html=True)
-    mc2.markdown(f'<div class="kpi-box"><div class="kpi-label">Threshold</div><div class="kpi-value">{float(metrics["best_threshold"]):.4f}</div></div>', unsafe_allow_html=True)
-    mc3.markdown(f'<div class="kpi-box"><div class="kpi-label">Training Samples</div><div class="kpi-value">{int(float(metrics["n_train"])):,}</div></div>', unsafe_allow_html=True)
-    mc4.markdown(f'<div class="kpi-box"><div class="kpi-label">Test Samples</div><div class="kpi-value">{int(float(metrics["n_test"])):,}</div></div>', unsafe_allow_html=True)
+    mc1.markdown(kpi("ROC-AUC",          f"{float(metrics['roc_auc']):.4f}"), unsafe_allow_html=True)
+    mc2.markdown(kpi("Threshold",         f"{float(metrics['best_threshold']):.4f}"), unsafe_allow_html=True)
+    mc3.markdown(kpi("Training Samples",  f"{int(float(metrics['n_train'])):,}"), unsafe_allow_html=True)
+    mc4.markdown(kpi("Test Samples",      f"{int(float(metrics['n_test'])):,}"), unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("#### Limitations")
     st.markdown("""
     <div class="card">
-    <ul>
+    <ul style="margin:0; padding-left:1.2rem; line-height:2;">
     <li>yfinance data coverage is incomplete for some smaller or less liquid companies.</li>
-    <li>The model was trained on historical distress events and may not generalize to
-    novel macroeconomic environments.</li>
+    <li>The model was trained on historical distress events and may not generalize to novel macroeconomic environments.</li>
     <li>Predictions are probabilistic estimates, not certainties.</li>
-    <li>This tool is for academic and analytical purposes only and does not constitute
-    investment, lending, or legal advice.</li>
+    <li>This tool is for academic and analytical purposes only and does not constitute investment, lending, or legal advice.</li>
     </ul>
     </div>
     """, unsafe_allow_html=True)
