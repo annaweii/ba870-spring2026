@@ -26,12 +26,28 @@ if run and ticker:
     with st.spinner(f"Fetching data for {ticker}..."):
         try:
             feat_dict, company_name, sector, industry, altman_z, info, hist = fetch_company_data(ticker)
-        except Exception:
-            st.error(f"Could not retrieve data for {ticker}. Check the ticker and try again.")
+        except Exception as e:
+            st.error(f"Could not retrieve data for {ticker}.")
+            st.exception(e)
             st.stop()
 
-    X = pd.DataFrame([feat_dict])[features]
-    prob = float(model.predict_proba(X)[0][1])
+    try:
+        X_input = pd.DataFrame([feat_dict])
+
+        missing_features = [col for col in features if col not in X_input.columns]
+        if missing_features:
+            st.error("The model input is missing required features.")
+            st.write("Missing features:", missing_features)
+            st.stop()
+
+        X = X_input[features]
+        prob = float(model.predict_proba(X)[0][1])
+
+    except Exception as e:
+        st.error("The model could not generate a prediction from the retrieved data.")
+        st.exception(e)
+        st.stop()
+
     risk_label, badge_class, banner_class = get_risk_label(prob)
     z_label, z_badge = get_altman_label(altman_z)
 
@@ -69,6 +85,7 @@ if run and ticker:
     st.markdown("<br>", unsafe_allow_html=True)
 
     g_col, s_col = st.columns([1.1, 1])
+
     with g_col:
         gauge = go.Figure(go.Indicator(
             mode="gauge+number",
@@ -79,9 +96,9 @@ if run and ticker:
                 "bar": {"color": "#dc2626" if prob >= THRESHOLD else "#16a34a", "thickness": 0.28},
                 "bgcolor": "white",
                 "steps": [
-                    {"range": [0, THRESHOLD*80], "color": "#f0fdf4"},
-                    {"range": [THRESHOLD*80, THRESHOLD*130], "color": "#fff7ed"},
-                    {"range": [THRESHOLD*130, 100], "color": "#fef2f2"},
+                    {"range": [0, THRESHOLD * 80], "color": "#f0fdf4"},
+                    {"range": [THRESHOLD * 80, THRESHOLD * 130], "color": "#fff7ed"},
+                    {"range": [THRESHOLD * 130, 100], "color": "#fef2f2"},
                 ],
                 "threshold": {
                     "line": {"color": "#1e293b", "width": 3},
@@ -101,6 +118,7 @@ if run and ticker:
 
     with s_col:
         st.markdown("<br>", unsafe_allow_html=True)
+
         drivers = []
         if feat_dict.get("roa") and feat_dict["roa"] < 0:
             drivers.append("negative profitability (ROA below zero)")
@@ -114,7 +132,9 @@ if run and ticker:
             drivers.append("an Altman Z-score in the distress zone")
 
         if prob >= THRESHOLD:
-            summary = "This company shows elevated next-year distress risk" + (f", driven by {', '.join(drivers)}." if drivers else ".")
+            summary = "This company shows elevated next-year distress risk" + (
+                f", driven by {', '.join(drivers)}." if drivers else "."
+            )
         else:
             summary = "Based on current financial and market data, this company does not show elevated distress risk relative to the model threshold."
 
@@ -171,74 +191,77 @@ if run and ticker:
 
     df_drivers = pd.DataFrame(rows)
 
-    fig = go.Figure()
-    for _, row in df_drivers.iterrows():
-        fig.add_trace(go.Bar(
-            x=[row["_val"] - row["_ref"]],
-            y=[row["Feature"]],
-            orientation="h",
-            marker=dict(
-                color=row["_color"],
-                line=dict(color="rgba(255,255,255,0.55)", width=1)
-            ),
-            showlegend=False,
-            hovertemplate=(
-                f"{row['Feature']}: {row['Value']}<br>"
-                f"Benchmark: {row['Benchmark']}<br>"
-                f"Signal: {row['Signal']}<extra></extra>"
-            )
-        ))
+    if not df_drivers.empty:
+        fig = go.Figure()
+        for _, row in df_drivers.iterrows():
+            fig.add_trace(go.Bar(
+                x=[row["_val"] - row["_ref"]],
+                y=[row["Feature"]],
+                orientation="h",
+                marker=dict(
+                    color=row["_color"],
+                    line=dict(color="rgba(255,255,255,0.55)", width=1)
+                ),
+                showlegend=False,
+                hovertemplate=(
+                    f"{row['Feature']}: {row['Value']}<br>"
+                    f"Benchmark: {row['Benchmark']}<br>"
+                    f"Signal: {row['Signal']}<extra></extra>"
+                )
+            ))
 
-    fig.update_layout(
-        xaxis_title="Deviation from benchmark",
-        height=470,
-        margin=dict(t=20, b=20, l=10, r=10),
-        plot_bgcolor="white",
-        paper_bgcolor="white",
-        bargap=0.28,
-        font={"family": "Inter, Segoe UI, sans-serif", "color": "#475569"}
-    )
-    fig.update_xaxes(showgrid=True, gridcolor="#e2e8f0", zeroline=True, zerolinecolor="#94a3b8")
-    fig.update_yaxes(categoryorder="total ascending")
-    st.plotly_chart(fig, use_container_width=True)
+        fig.update_layout(
+            xaxis_title="Deviation from benchmark",
+            height=470,
+            margin=dict(t=20, b=20, l=10, r=10),
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+            bargap=0.28,
+            font={"family": "Inter, Segoe UI, sans-serif", "color": "#475569"}
+        )
+        fig.update_xaxes(showgrid=True, gridcolor="#e2e8f0", zeroline=True, zerolinecolor="#94a3b8")
+        fig.update_yaxes(categoryorder="total ascending")
+        st.plotly_chart(fig, use_container_width=True)
 
-    st.markdown("<div class='driver-grid-title'>Benchmark Breakdown</div>", unsafe_allow_html=True)
-    card_cols = st.columns(2)
-    for i, (_, row) in enumerate(df_drivers.iterrows()):
-        with card_cols[i % 2]:
-            signal_class = "signal-good" if row["Signal"] == "Reduces Risk" else "signal-bad"
-            st.markdown(
-                f"""
-                <div class="driver-card">
-                    <div class="driver-card-top">
-                        <div class="driver-card-name">{row["Feature"]}</div>
-                        <div class="{signal_class}">{row["Signal"]}</div>
-                    </div>
-                    <div class="driver-card-values">
-                        <div>
-                            <div class="driver-mini-label">Value</div>
-                            <div class="driver-mini-value">{row["Value"]}</div>
+        st.markdown("<div class='driver-grid-title'>Benchmark Breakdown</div>", unsafe_allow_html=True)
+        card_cols = st.columns(2)
+        for i, (_, row) in enumerate(df_drivers.iterrows()):
+            with card_cols[i % 2]:
+                signal_class = "signal-good" if row["Signal"] == "Reduces Risk" else "signal-bad"
+                st.markdown(
+                    f"""
+                    <div class="driver-card">
+                        <div class="driver-card-top">
+                            <div class="driver-card-name">{row["Feature"]}</div>
+                            <div class="{signal_class}">{row["Signal"]}</div>
                         </div>
-                        <div>
-                            <div class="driver-mini-label">Benchmark</div>
-                            <div class="driver-mini-value">{row["Benchmark"]}</div>
+                        <div class="driver-card-values">
+                            <div>
+                                <div class="driver-mini-label">Value</div>
+                                <div class="driver-mini-value">{row["Value"]}</div>
+                            </div>
+                            <div>
+                                <div class="driver-mini-label">Benchmark</div>
+                                <div class="driver-mini-value">{row["Benchmark"]}</div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                """,
-                unsafe_allow_html=True
-            )
+                    """,
+                    unsafe_allow_html=True
+                )
 
-    increasing = [r["Feature"] for _, r in df_drivers.iterrows() if r["Signal"] == "Increases Risk"]
-    reducing   = [r["Feature"] for _, r in df_drivers.iterrows() if r["Signal"] == "Reduces Risk"]
+        increasing = [r["Feature"] for _, r in df_drivers.iterrows() if r["Signal"] == "Increases Risk"]
+        reducing = [r["Feature"] for _, r in df_drivers.iterrows() if r["Signal"] == "Reduces Risk"]
 
-    narrative = ""
-    if increasing:
-        narrative += f"Risk is negatively impacted by: {', '.join(increasing)}. "
-    if reducing:
-        narrative += f"Positive signals include: {', '.join(reducing)}."
+        narrative = ""
+        if increasing:
+            narrative += f"Risk is negatively impacted by: {', '.join(increasing)}. "
+        if reducing:
+            narrative += f"Positive signals include: {', '.join(reducing)}."
 
-    st.markdown(f'<div class="highlight-card">{narrative}</div>', unsafe_allow_html=True)
+        st.markdown(f'<div class="highlight-card">{narrative}</div>', unsafe_allow_html=True)
+    else:
+        st.info("No benchmark comparison metrics were available for this company.")
 
     st.session_state.update({
         "last_ticker": ticker,
