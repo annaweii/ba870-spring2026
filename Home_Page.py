@@ -15,12 +15,69 @@ _, _, _, metrics = load_artifacts()
 # ------------------------------------------------------------------------------
 # HEADER
 # ------------------------------------------------------------------------------
-render_header(
-    "RiskMonitor",
-    "Early-warning financial distress prediction for public companies",
-    "header-home"
-)
+st.markdown("""
+<div style="
+    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+    padding: 2.5rem 2rem;
+    border-radius: 18px;
+    margin-bottom: 1.8rem;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+">
+    <div style="
+        font-size: 2.8rem;
+        font-weight: 900;
+        color: white;
+        margin-bottom: 0.6rem;
+    ">
+        RiskMonitor
+    </div>
 
+    <div style="
+        font-size: 1.05rem;
+        color: #cbd5f5;
+        max-width: 700px;
+        line-height: 1.5;
+        margin-bottom: 1.5rem;
+    ">
+        Early-warning financial distress prediction for public companies
+    </div>
+
+    <div style="display: flex; gap: 1rem;">
+        <div style="
+            background: rgba(255,255,255,0.1);
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+        ">
+            ML-Powered
+        </div>
+
+        <div style="
+            background: rgba(255,255,255,0.1);
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+        ">
+            Real-Time Data
+        </div>
+
+        <div style="
+            background: rgba(255,255,255,0.1);
+            padding: 0.6rem 1rem;
+            border-radius: 10px;
+            color: white;
+            font-size: 0.85rem;
+            font-weight: 600;
+        ">
+            Interpretable Insights
+        </div>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 # ------------------------------------------------------------------------------
 # ABOUT SECTION
 # ------------------------------------------------------------------------------
