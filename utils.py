@@ -101,8 +101,9 @@ def apply_global_styles():
             background: linear-gradient(135deg, #082f49 0%, #0f766e 55%, #14b8a6 100%);
         }
         .header-method {
-            background: linear-gradient(135deg, #5b21b6 0%, #8b5cf6 50%, #ddd6fe 100%);
+            background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 50%, #6d28d9 100%);
         }
+        
         .card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
