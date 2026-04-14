@@ -20,6 +20,7 @@ def render_sidebar_header():
         """,
         unsafe_allow_html=True
     )
+
 @st.cache_resource
 def load_artifacts():
     model = joblib.load("final_app_model.joblib")
@@ -103,7 +104,10 @@ def apply_global_styles():
         .header-method {
             background: linear-gradient(135deg, #1e1b4b 0%, #4c1d95 50%, #6d28d9 100%);
         }
-        
+        .header-custom {
+            background: linear-gradient(135deg, #020617 0%, #1e3a8a 55%, #4f46e5 100%);
+        }
+
         .card {
             background: #ffffff;
             border: 1px solid #e2e8f0;
@@ -295,7 +299,7 @@ def apply_global_styles():
             margin-bottom: 0.8rem;
         }
 
-        /* Default (no ugly gray) */
+        /* Global default button style (keeps existing risk page theme) */
         .stButton > button {
             background: linear-gradient(135deg, #d6b4b4, #f5c2c2);
             color: #7f1d1d;
@@ -307,21 +311,19 @@ def apply_global_styles():
             box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
             transition: all 0.2s ease-in-out;
         }
-        
-        /* Hover (turns into your nice red) */
+
         .stButton > button:hover {
             background: linear-gradient(135deg, #991b1b, #dc2626);
             color: #ffffff;
             transform: translateY(-1px);
         }
-        
-        /* Click (same red, slight press effect) */
+
         .stButton > button:active {
             background: linear-gradient(135deg, #991b1b, #dc2626);
             color: #ffffff;
             transform: scale(0.98);
         }
-        
+
         .stTextInput input {
             border-radius: 10px;
             border: 1.5px solid #cbd5e1;
@@ -407,6 +409,38 @@ def apply_global_styles():
         }
     </style>
     """, unsafe_allow_html=True)
+
+def apply_custom_comparison_button_style():
+    st.markdown(
+        """
+        <style>
+        .stButton > button {
+            background: linear-gradient(135deg, #1e3a8a, #4f46e5);
+            color: #ffffff;
+            border: none;
+            border-radius: 12px;
+            font-weight: 700;
+            font-size: 1rem;
+            padding: 0.65rem 1.3rem;
+            box-shadow: 0 6px 16px rgba(79, 70, 229, 0.28);
+            transition: all 0.2s ease-in-out;
+        }
+
+        .stButton > button:hover {
+            background: linear-gradient(135deg, #2563eb, #6366f1);
+            color: #ffffff;
+            transform: translateY(-1px);
+        }
+
+        .stButton > button:active {
+            background: linear-gradient(135deg, #1e40af, #4338ca);
+            color: #ffffff;
+            transform: scale(0.98);
+        }
+        </style>
+        """,
+        unsafe_allow_html=True
+    )
 
 def render_header(title, subtitle, header_class):
     st.markdown(
