@@ -1,11 +1,10 @@
 import streamlit as st
 import plotly.express as px
 
-from utils import apply_global_styles, render_header, kpi, fmt, get_risk_label, render_sidebar_header
+from utils import apply_global_styles, render_header, kpi, fmt, get_risk_label
 
 st.set_page_config(page_title="Financial Health Dashboard", layout="wide")
 apply_global_styles()
-render_sidebar_header() 
 
 render_header(
     "Financial Health Dashboard",
