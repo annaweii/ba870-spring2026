@@ -5,19 +5,6 @@ import joblib
 import json
 import yfinance as yf
 
-def apply_global_styles():
-    import streamlit as st
-
-    st.markdown("""
-    <style>
-    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-    html, body, [class*="css"]  {
-        font-family: 'Inter', sans-serif;
-    }
-    </style>
-    """, unsafe_allow_html=True)
-
 def render_sidebar_header():
     import streamlit as st
     st.sidebar.markdown(
