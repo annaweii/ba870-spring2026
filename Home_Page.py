@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import apply_global_styles, render_header, kpi, load_artifacts
+from utils import apply_global_styles, kpi, load_artifacts
 
 # ------------------------------------------------------------------------------
 # PAGE CONFIG
@@ -13,71 +13,74 @@ apply_global_styles()
 _, _, _, metrics = load_artifacts()
 
 # ------------------------------------------------------------------------------
-# HEADER
+# HERO HEADER (UPDATED)
 # ------------------------------------------------------------------------------
 st.markdown("""
 <div style="
-    background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
-    padding: 2.5rem 2rem;
-    border-radius: 18px;
-    margin-bottom: 1.8rem;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+    background: linear-gradient(135deg, #020617 0%, #1e3a8a 55%, #4f46e5 100%);
+    padding: 3.2rem 3rem 2.6rem 3rem;
+    border-radius: 24px;
+    margin-bottom: 2.2rem;
+    box-shadow: 0 18px 45px rgba(15, 23, 42, 0.20);
+    border: 1px solid rgba(255,255,255,0.08);
 ">
     <div style="
-        font-size: 2.8rem;
+        font-size: 3rem;
         font-weight: 900;
         color: white;
-        margin-bottom: 0.6rem;
+        margin-bottom: 0.5rem;
+        letter-spacing: -0.5px;
     ">
         RiskMonitor
     </div>
 
     <div style="
-        font-size: 1.05rem;
-        color: #cbd5f5;
-        max-width: 700px;
-        line-height: 1.5;
-        margin-bottom: 1.5rem;
+        font-size: 1.15rem;
+        color: #c7d2fe;
+        max-width: 750px;
+        line-height: 1.6;
+        margin-bottom: 1.6rem;
     ">
-        Early-warning financial distress prediction for public companies
+        Early-warning financial distress prediction for public companies using machine learning and real-time financial signals
     </div>
 
-    <div style="display: flex; gap: 1rem;">
+    <div style="display: flex; gap: 0.7rem; flex-wrap: wrap;">
         <div style="
-            background: rgba(255,255,255,0.1);
-            padding: 0.6rem 1rem;
-            border-radius: 10px;
+            background: rgba(255,255,255,0.12);
+            padding: 0.5rem 0.9rem;
+            border-radius: 999px;
             color: white;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
         ">
-            ML-Powered
+            Machine Learning
         </div>
 
         <div style="
-            background: rgba(255,255,255,0.1);
-            padding: 0.6rem 1rem;
-            border-radius: 10px;
+            background: rgba(255,255,255,0.12);
+            padding: 0.5rem 0.9rem;
+            border-radius: 999px;
             color: white;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
         ">
             Real-Time Data
         </div>
 
         <div style="
-            background: rgba(255,255,255,0.1);
-            padding: 0.6rem 1rem;
-            border-radius: 10px;
+            background: rgba(255,255,255,0.12);
+            padding: 0.5rem 0.9rem;
+            border-radius: 999px;
             color: white;
-            font-size: 0.85rem;
+            font-size: 0.8rem;
             font-weight: 600;
         ">
-            Interpretable Insights
+            Explainable Insights
         </div>
     </div>
 </div>
 """, unsafe_allow_html=True)
+
 # ------------------------------------------------------------------------------
 # ABOUT SECTION
 # ------------------------------------------------------------------------------
