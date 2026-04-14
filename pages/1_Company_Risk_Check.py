@@ -43,6 +43,7 @@ if run and ticker:
     risk_label, badge_class, banner_class = get_risk_label(prob, THRESHOLD)
     z_label, z_badge = get_altman_label(altman_z)
 
+    # Company strip
     st.markdown(f"""
     <div class="company-strip">
         <div style="font-size:1.55rem; font-weight:800; color:#0f172a;">{company_name}</div>
@@ -50,6 +51,7 @@ if run and ticker:
     </div>
     """, unsafe_allow_html=True)
 
+    # Colored risk banner
     banner_sub = (
         f"Model probability: {prob*100:.1f}% — above the distress threshold of {THRESHOLD*100:.1f}%"
         if prob >= THRESHOLD * 0.8
@@ -62,6 +64,7 @@ if run and ticker:
     </div>
     """, unsafe_allow_html=True)
 
+    # KPI row
     k1, k2, k3, k4 = st.columns(4)
     k1.markdown(kpi("Distress Probability", f"{prob*100:.1f}%"), unsafe_allow_html=True)
     k2.markdown(
@@ -76,6 +79,7 @@ if run and ticker:
 
     st.markdown("<br>", unsafe_allow_html=True)
 
+    # Gauge + summary
     g_col, s_col = st.columns([1.1, 1])
     with g_col:
         gauge = go.Figure(go.Indicator(
@@ -122,7 +126,9 @@ if run and ticker:
             drivers.append("an Altman Z-score in the distress zone")
 
         if prob >= THRESHOLD:
-            summary = "This company shows elevated next-year distress risk" + (f", driven by {', '.join(drivers)}." if drivers else ".")
+            summary = "This company shows elevated next-year distress risk" + (
+                f", driven by {', '.join(drivers)}." if drivers else "."
+            )
         else:
             summary = "Based on current financial and market data, this company does not show elevated distress risk relative to the model threshold."
 
@@ -137,6 +143,126 @@ if run and ticker:
         bb3.markdown(kpi("ROA", fmt(feat_dict.get("roa"), pct=True)), unsafe_allow_html=True)
         bb4.markdown(kpi("Debt to Assets", fmt(feat_dict.get("debt_to_assets"), pct=True)), unsafe_allow_html=True)
 
+    # Risk Drivers section
+    st.markdown("<hr class='section-divider'>", unsafe_allow_html=True)
+    st.markdown("#### What Is Driving This Score")
+    st.markdown("<p class='section-title'>Feature performance vs healthy benchmark</p>", unsafe_allow_html=True)
+
+    benchmarks = {
+        "roa":                   ("ROA", 0.05, True, False),
+        "current_ratio":         ("Current Ratio", 1.5, False, False),
+        "liabilities_to_assets": ("Liabilities to Assets", 0.5, False, True),
+        "debt_to_assets":        ("Debt to Assets", 0.35, False, True),
+        "ocf_to_liabilities":    ("OCF to Liabilities", 0.10, False, False),
+        "A_wc_to_assets":        ("Working Capital / Assets", 0.10, False, False),
+        "C_ebit_to_assets":      ("EBIT / Assets", 0.08, False, False),
+        "Altman_Z":              ("Altman Z-Score", 2.99, False, False),
+        "drawdown_1y":           ("1Y Max Drawdown", -0.20, False, True),
+        "vol_252d":              ("Annual Volatility", 0.25, False, True),
+    }
+
+    rows = []
+    for key, (label, ref, is_pct, higher_is_worse) in benchmarks.items():
+        val = feat_dict.get(key, np.nan)
+
+        if val is None or pd.isna(val):
+            continue
+
+        if higher_is_worse:
+            signal = "Increases Risk" if val > ref else "Reduces Risk"
+            color = "#dc2626" if val > ref else "#16a34a"
+        else:
+            signal = "Reduces Risk" if val >= ref else "Increases Risk"
+            color = "#16a34a" if val >= ref else "#dc2626"
+
+        rows.append({
+            "Feature": label,
+            "Value": fmt(val, pct=is_pct),
+            "Benchmark": fmt(ref, pct=is_pct),
+            "Signal": signal,
+            "_color": color,
+            "_val": val,
+            "_ref": ref,
+        })
+
+    df_drivers = pd.DataFrame(rows)
+
+    if not df_drivers.empty:
+        # Full-width chart
+        fig = go.Figure()
+        for _, row in df_drivers.iterrows():
+            fig.add_trace(go.Bar(
+                x=[row["_val"] - row["_ref"]],
+                y=[row["Feature"]],
+                orientation="h",
+                marker=dict(
+                    color=row["_color"],
+                    line=dict(color="rgba(255,255,255,0.55)", width=1)
+                ),
+                showlegend=False,
+                hovertemplate=(
+                    f"{row['Feature']}: {row['Value']}<br>"
+                    f"Benchmark: {row['Benchmark']}<br>"
+                    f"Signal: {row['Signal']}<extra></extra>"
+                )
+            ))
+
+        fig.update_layout(
+            xaxis_title="Deviation from benchmark",
+            height=470,
+            margin=dict(t=20, b=20, l=10, r=10),
+            plot_bgcolor="white",
+            paper_bgcolor="white",
+            bargap=0.28,
+            font={"family": "Inter, Segoe UI, sans-serif", "color": "#475569"}
+        )
+        fig.update_xaxes(showgrid=True, gridcolor="#e2e8f0", zeroline=True, zerolinecolor="#94a3b8")
+        fig.update_yaxes(categoryorder="total ascending")
+
+        st.plotly_chart(fig, use_container_width=True)
+
+        # Cards below chart
+        st.markdown("<div class='driver-grid-title'>Benchmark Breakdown</div>", unsafe_allow_html=True)
+
+        card_cols = st.columns(2)
+        for i, (_, row) in enumerate(df_drivers.iterrows()):
+            with card_cols[i % 2]:
+                signal_class = "signal-good" if row["Signal"] == "Reduces Risk" else "signal-bad"
+                st.markdown(
+                    f"""
+                    <div class="driver-card">
+                        <div class="driver-card-top">
+                            <div class="driver-card-name">{row["Feature"]}</div>
+                            <div class="{signal_class}">{row["Signal"]}</div>
+                        </div>
+                        <div class="driver-card-values">
+                            <div>
+                                <div class="driver-mini-label">Value</div>
+                                <div class="driver-mini-value">{row["Value"]}</div>
+                            </div>
+                            <div>
+                                <div class="driver-mini-label">Benchmark</div>
+                                <div class="driver-mini-value">{row["Benchmark"]}</div>
+                            </div>
+                        </div>
+                    </div>
+                    """,
+                    unsafe_allow_html=True
+                )
+
+        increasing = [r["Feature"] for _, r in df_drivers.iterrows() if r["Signal"] == "Increases Risk"]
+        reducing = [r["Feature"] for _, r in df_drivers.iterrows() if r["Signal"] == "Reduces Risk"]
+
+        narrative = ""
+        if increasing:
+            narrative += f"Risk is negatively impacted by: {', '.join(increasing)}. "
+        if reducing:
+            narrative += f"Positive signals include: {', '.join(reducing)}."
+
+        if narrative.strip():
+            st.markdown(f'<div class="highlight-card">{narrative}</div>', unsafe_allow_html=True)
+
+    # Save to session
     st.session_state.update({
         "last_ticker": ticker,
         "last_feat_dict": feat_dict,
