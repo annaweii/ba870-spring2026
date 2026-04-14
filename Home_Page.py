@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import apply_global_styles, render_header, kpi, load_artifacts, render_sidebar_header
+from utils import apply_global_styles, render_header, kpi, load_artifacts
 
 # ------------------------------------------------------------------------------
 # PAGE CONFIG
@@ -8,7 +8,6 @@ st.set_page_config(page_title="RiskMonitor", layout="wide")
 
 # Apply global styles
 apply_global_styles()
-render_sidebar_header()
 
 # Load model metadata
 _, _, _, metrics = load_artifacts()
