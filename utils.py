@@ -10,7 +10,7 @@ def render_sidebar_header():
     st.sidebar.markdown(
         """
         <div style="
-            font-size: 8rem;
+            font-size: 3rem;
             font-weight: 800;
             margin-bottom: 0.5rem;
         ">
