@@ -5,6 +5,21 @@ import joblib
 import json
 import yfinance as yf
 
+def render_sidebar_header():
+    import streamlit as st
+    st.sidebar.markdown(
+        """
+        <div style="
+            font-size: 1.4rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+        ">
+            RiskMonitor
+        </div>
+        <hr style="margin-top:0.3rem; margin-bottom:1rem;">
+        """,
+        unsafe_allow_html=True
+    )
 @st.cache_resource
 def load_artifacts():
     model = joblib.load("final_app_model.joblib")
