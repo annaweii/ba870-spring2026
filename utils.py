@@ -95,7 +95,7 @@ def apply_global_styles():
             background: linear-gradient(135deg, #081223 0%, #0f2454 55%, #1d4ed8 100%);
         }
         .header-risk {
-            background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 55%, #f87171 100%);
+            background: linear-gradient(135deg, #2b0b0b 0%, #5a0f0f 45%, #991b1b 100%);
         }
         .header-dashboard {
             background: linear-gradient(135deg, #082f49 0%, #0f766e 55%, #14b8a6 100%);
@@ -296,14 +296,14 @@ def apply_global_styles():
         }
 
         .stButton > button {
-            background: linear-gradient(135deg, #1d4ed8, #2563eb, #3b82f6);
-            color: #ffffff;
+            background: linear-gradient(135deg, #c7ced9, #b8c1cf, #aeb7c6);
+            color: #1e293b;
             border: none;
             border-radius: 10px;
             font-weight: 700;
             font-size: 0.95rem;
             padding: 0.55rem 1.3rem;
-            box-shadow: 0 6px 16px rgba(37,99,235,0.28);
+            box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
         }
 
         .stTextInput input {
