@@ -95,7 +95,7 @@ def apply_global_styles():
             background: linear-gradient(135deg, #081223 0%, #0f2454 55%, #1d4ed8 100%);
         }
         .header-risk {
-            background: linear-gradient(135deg, #2b0b0b 0%, #5a0f0f 45%, #991b1b 100%);
+            background: linear-gradient(135deg, #5f0f0f 0%, #991b1b 50%, #dc2626 100%);
         }
         .header-dashboard {
             background: linear-gradient(135deg, #082f49 0%, #0f766e 55%, #14b8a6 100%);
@@ -295,8 +295,9 @@ def apply_global_styles():
             margin-bottom: 0.8rem;
         }
 
+        /* Base button */
         .stButton > button {
-            background: linear-gradient(135deg, #c7ced9, #b8c1cf, #aeb7c6);
+            background: linear-gradient(135deg, #c7ced9, #d6b4b4);
             color: #1e293b;
             border: none;
             border-radius: 10px;
@@ -304,8 +305,22 @@ def apply_global_styles():
             font-size: 0.95rem;
             padding: 0.55rem 1.3rem;
             box-shadow: 0 4px 12px rgba(15, 23, 42, 0.12);
+            transition: all 0.2s ease-in-out;
         }
-
+        
+        /* Hover */
+        .stButton > button:hover {
+            background: linear-gradient(135deg, #d6b4b4, #fca5a5);
+            color: #7f1d1d;
+            transform: translateY(-1px);
+        }
+        
+        /* Click */
+        .stButton > button:active {
+            background: linear-gradient(135deg, #991b1b, #dc2626);
+            color: #ffffff;
+            transform: scale(0.98);
+        }
         .stTextInput input {
             border-radius: 10px;
             border: 1.5px solid #cbd5e1;
