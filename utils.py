@@ -95,13 +95,13 @@ def apply_global_styles():
             background: linear-gradient(135deg, #081223 0%, #0f2454 55%, #1d4ed8 100%);
         }
         .header-risk {
-            background: linear-gradient(135deg, #0b132b 0%, #1e3a8a 55%, #2563eb 100%);
+            background: linear-gradient(135deg, #7f1d1d 0%, #dc2626 55%, #f87171 100%);
         }
         .header-dashboard {
             background: linear-gradient(135deg, #082f49 0%, #0f766e 55%, #14b8a6 100%);
         }
         .header-method {
-            background: linear-gradient(135deg, #1e293b 0%, #334155 55%, #64748b 100%);
+            background: linear-gradient(135deg, #2e1065 0%, #6d28d9 55%, #a78bfa 100%);
         }
 
         .card {
