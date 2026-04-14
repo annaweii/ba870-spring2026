@@ -1,10 +1,9 @@
 import streamlit as st
-from utils import apply_global_styles, render_header, kpi, load_artifacts, render_sidebar_header
+from utils import apply_global_styles, render_header, kpi, load_artifacts
 
 
 st.set_page_config(page_title="Model Insights", layout="wide")
 apply_global_styles()
-render_sidebar_header() 
 
 _, _, THRESHOLD, metrics = load_artifacts()
 
