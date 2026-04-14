@@ -8,6 +8,7 @@ st.set_page_config(page_title="RiskMonitor", layout="wide")
 
 # Apply global styles
 apply_global_styles()
+render_sidebar_header()
 
 # Load model metadata
 _, _, _, metrics = load_artifacts()
