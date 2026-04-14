@@ -1,5 +1,5 @@
 import streamlit as st
-from utils import apply_global_styles, render_header, kpi, load_artifacts
+from utils import apply_global_styles, render_header, kpi, load_artifacts, render_sidebar_header
 
 # ------------------------------------------------------------------------------
 # PAGE CONFIG
