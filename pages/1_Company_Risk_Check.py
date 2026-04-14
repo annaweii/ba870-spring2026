@@ -12,10 +12,12 @@ from utils import (
     fetch_company_data,
     get_risk_label,
     get_altman_label,
+   render_sidebar_header,
 )
 
 st.set_page_config(page_title="Company Risk Check", layout="wide")
 apply_global_styles()
+render_sidebar_header()
 
 model, features, THRESHOLD, _ = load_artifacts()
 
