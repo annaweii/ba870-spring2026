@@ -7,18 +7,20 @@ from utils import (
     render_header,
     load_artifacts,
     get_risk_label,
-    fmt
+    fmt,
+    apply_custom_comparison_button_style,
 )
 
 st.set_page_config(page_title="Custom Risk Comparison", layout="wide")
 apply_global_styles()
+apply_custom_comparison_button_style()
 
 model, features, THRESHOLD, _ = load_artifacts()
 
 render_header(
     "Custom Risk Comparison",
     "Input company financials to estimate distress risk",
-    "header-method"
+    "header-custom"
 )
 
 # -------------------------------
