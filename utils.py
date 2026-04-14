@@ -295,10 +295,10 @@ def apply_global_styles():
             margin-bottom: 0.8rem;
         }
 
-        /* Base button */
+        /* Default (no ugly gray) */
         .stButton > button {
-            background: linear-gradient(135deg, #c7ced9, #d6b4b4);
-            color: #1e293b;
+            background: linear-gradient(135deg, #d6b4b4, #f5c2c2);
+            color: #7f1d1d;
             border: none;
             border-radius: 10px;
             font-weight: 700;
@@ -308,19 +308,20 @@ def apply_global_styles():
             transition: all 0.2s ease-in-out;
         }
         
-        /* Hover */
+        /* Hover (turns into your nice red) */
         .stButton > button:hover {
-            background: linear-gradient(135deg, #d6b4b4, #fca5a5);
-            color: #7f1d1d;
+            background: linear-gradient(135deg, #991b1b, #dc2626);
+            color: #ffffff;
             transform: translateY(-1px);
         }
         
-        /* Click */
+        /* Click (same red, slight press effect) */
         .stButton > button:active {
             background: linear-gradient(135deg, #991b1b, #dc2626);
             color: #ffffff;
             transform: scale(0.98);
         }
+        
         .stTextInput input {
             border-radius: 10px;
             border: 1.5px solid #cbd5e1;
